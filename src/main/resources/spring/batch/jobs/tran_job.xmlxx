@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	">
+
+	<import resource="../config/context.xml" />
+	<import resource="../config/database.xml" />
+
+
+	<bean id="reader" class="korbit.tran.batch.NullItemReader" scope="step">
+	</bean>
+	<bean id="writer" class="korbit.tran.batch.NullItemWriter" scope="step">
+	</bean>
+
+	
+	<bean id="tranProcessor" class="korbit.tran.batch.TranProcessor" />
+
+	<batch:job id="tranJob">
+		<batch:step id="tranStep1">
+
+			<batch:tasklet transaction-manager="transactionManager">
+
+				<batch:chunk reader="reader" processor="tranProcessor"
+					writer="writer" commit-interval="1" />
+
+			</batch:tasklet>
+
+		</batch:step>
+	</batch:job>	
+
+</beans>
