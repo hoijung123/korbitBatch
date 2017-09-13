@@ -29,6 +29,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 
 import korbit.tran.batch.TranProcessor;
 import korbit.tran.dao.ConfigDAO;
@@ -43,6 +44,7 @@ import korbit.tran.vo.OrderRetVO;
 import korbit.tran.vo.OrdersBuyVO;
 import korbit.tran.vo.OrdersSellVO;
 import korbit.tran.vo.TickerVO;
+import korbit.tran.vo.TransactionVO;
 
 public class CallAPIService {
 
@@ -455,23 +457,25 @@ public class CallAPIService {
 	}
 
 	/* 체결주문조회 */
-	public List<String> getTransactions(String currency_pair, String orderId) {
+	public List<TransactionVO> getTransactions(String currency_pair, String orderId) {
 		String accessToken = this.oauth();
 
 		List<String> listOrdersId = new ArrayList<String>();
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
 		params.add(new BasicNameValuePair("currency_pair", currency_pair));
-		params.add(new BasicNameValuePair("order_id", orderId));
+		if (!StringUtils.isEmpty(orderId)) {
+			params.add(new BasicNameValuePair("order_id", orderId));
+		}
 
 		String json = callGetApi(Constants.transactionsPath, params);
 
 		ObjectMapper mapper = new ObjectMapper();
-		List<OpenOrderVO> openOrders;
+		List<TransactionVO> transactionVOList = null;
 		try {
-			openOrders = mapper.readValue(json, new TypeReference<List<OpenOrderVO>>() {
+			transactionVOList = mapper.readValue(json, new TypeReference<List<TransactionVO>>() {
 			});
-			for (OpenOrderVO sub : openOrders) {
+			for (TransactionVO sub : transactionVOList) {
 				listOrdersId.add(sub.getId());
 			}
 		} catch (JsonParseException e) {
@@ -485,6 +489,12 @@ public class CallAPIService {
 			e.printStackTrace();
 		}
 
-		return listOrdersId;
+		return transactionVOList;
+	}
+
+	/* 체결주문조회 */
+	public List<TransactionVO> getTransactions(String currency_pair) {
+
+		return this.getTransactions(currency_pair, "");
 	}
 }

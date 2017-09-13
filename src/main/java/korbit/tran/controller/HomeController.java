@@ -91,4 +91,22 @@ public class HomeController {
 		return "tran/getBalances";
 	}	
 	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/listTransactions", method = RequestMethod.GET)
+	public String listTransactions(@RequestParam Map<String, String> params, Model model) throws ParseException {		
+		String sCurrency_pair = "";
+		sCurrency_pair = params.get("currency_pair");
+		
+		if (StringUtils.isEmpty(sCurrency_pair)) sCurrency_pair= Constants.ETH_KRW;
+		
+		CallAPIService api = new CallAPIService();
+		model.addAttribute("transactionList", api.getTransactions(sCurrency_pair));
+		
+		model.addAttribute("currency_pair", sCurrency_pair);
+		
+		return "tran/listTransactions";
+	}	
 }

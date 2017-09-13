@@ -5,9 +5,7 @@
 	<title>Home</title>
 </head>
 <body>
-<h1>
-	Hello world!  dd11dd
-</h1>
+<jsp:include page="tran/menu.jsp" flush="false"/>
 
 <P>  The time on the server is ${serverTime}. </P>
 </body>
