@@ -80,22 +80,27 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 			System.out.println(sCurrency_pair + " Ticker Price =============> " + tickerVo.getLast());
 
 			boolean isSell = false;
-			
+
 			for (OrdersSellVO sub : listOrdersSellVo) {
 				if ("N".equals(sTranSellYn)) {
 					continue;
 				}
-				
-				if (isSell)
-				{
+
+				if (isSell) {
 					continue;
 				}
-				
-				if (currency_balance <  (sub.getCoin_amount())) {
+
+				if (currency_balance < (sub.getCoin_amount())) {
 					sub.setCoin_amount(currency_balance);
 				}
-				
-				if (currency_balance >= 0.01)
+
+				float limit = 0;
+				if (Constants.ETH_KRW.equals(sCurrency_pair)) {
+					limit = (float) 0.01;
+				} else if (Constants.ETC_KRW.equals(sCurrency_pair)) {
+					limit = (float) 0.1;
+				}
+				if (currency_balance >= limit)
 					// if (tickerVo.getLast() > sub.getPrice()) {
 					if ("N".equals(sub.getStatus())) {
 						OrdersSellVO sellVO = new OrdersSellVO();
@@ -109,7 +114,7 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 							sellVOUpt.setSell_seq(sub.getSell_seq());
 							sellVOUpt.setOrderId(ret.getOrderId());
 							sellVOUpt.setStatus(ret.getStatus());
-							ordersSellDao.updateOrdersSell(sub);
+							ordersSellDao.updateOrdersSell(sellVOUpt);
 						}
 
 						if (Constants.SUCCESS != ret.getStatus()) {
