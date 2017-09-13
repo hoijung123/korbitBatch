@@ -9,7 +9,7 @@ public class OrdersBuyVO {
 	Float coin_amount = null;
 	Float fiat_amount = null;
 	String status = "";
-	String orderId = "";
+	String order_id = "";
 	
 	
 	
@@ -25,11 +25,11 @@ public class OrdersBuyVO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getOrderId() {
-		return orderId;
+	public String getOrder_id() {
+		return order_id;
 	}
-	public void setOrderId(String order_id) {
-		this.orderId = order_id;
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
 	}
 	public String getCurrency_pair() {
 		return currency_pair;

@@ -237,7 +237,8 @@
 		`t_orders_buy`.`coin_amount`,
 		`t_orders_buy`.`fiat_amount`,
 		`t_orders_buy`.`buy_date`,
-		`t_orders_buy`.`status`
+		`t_orders_buy`.`status`,
+		`t_orders_buy`.`order_id`
 		FROM
 		`bitsum`.`t_orders_buy`
 		WHERE
@@ -325,7 +326,8 @@
 		`price`,
 		`coin_amount`,
 		`sell_date`,
-		`status`
+		`status`,
+		order_id
 		FROM
 		`bitsum`.`t_orders_sell`
 		WHERE

@@ -32,7 +32,9 @@
 			<td align="right">${balances.eth.available}</td>
 			<td align="right">${balances.eth.trade_in_use}</td>
 			<td align="right">${balances.eth.withdrawal_in_use}</td>
-			<td align="right">${ethTicker.last}</td>
+			<td align="right"><fmt:formatNumber
+					value="${ethTicker.last}"
+					pattern="###,###" /></td>
 			<td align="right"><fmt:formatNumber
 					value="${balances.eth.available * ethTicker.last + balances.eth.trade_in_use * ethTicker.last}"
 					pattern="###,###" /></td>
@@ -42,7 +44,9 @@
 			<td align="right">${balances.etc.available}</td>
 			<td align="right">${balances.etc.trade_in_use}</td>
 			<td align="right">${balances.etc.withdrawal_in_use}</td>
-			<td align="right">${etcTicker.last}</td>
+			<td align="right"><fmt:formatNumber
+					value="${etcTicker.last}"
+					pattern="###,###" /></td>
 			<td align="right"><fmt:formatNumber
 					value="${balances.etc.available * etcTicker.last + balances.etc.trade_in_use * etcTicker.last}"
 					pattern="###,###" /></td>

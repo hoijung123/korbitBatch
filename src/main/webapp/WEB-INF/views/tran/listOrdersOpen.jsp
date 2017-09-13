@@ -16,8 +16,6 @@
 
 <body>
 	<h1>OrdersOpen</h1>
-	<br>
-	<br>
 	<select name="currency_pair" id="currency_pair"
 		onchange="change(this.value);">
 		<option value="eth_krw"

@@ -93,7 +93,7 @@ public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 						OrdersBuyVO buyVOUpt = new OrdersBuyVO();
 						buyVOUpt.setCurrency_pair(sub.getCurrency_pair());
 						buyVOUpt.setBuy_seq(sub.getBuy_seq());
-						buyVOUpt.setOrderId(ret.getOrderId());
+						buyVOUpt.setOrder_id(ret.getOrderId());
 						buyVOUpt.setStatus(ret.getStatus());
 						ordersBuyDao.updateOrdersBuy(buyVOUpt);
 					}

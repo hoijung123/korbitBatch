@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import korbit.tran.dao.OrdersBuyDAO;
+import korbit.tran.dao.OrdersSellDAO;
 import korbit.tran.service.CallAPIService;
 import korbit.tran.util.Constants;
+import korbit.tran.vo.OrdersBuyVO;
+import korbit.tran.vo.OrdersSellVO;
 
 /**
  * Handles requests for the application home page.
@@ -25,6 +31,11 @@ import korbit.tran.util.Constants;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Inject
+	private OrdersBuyDAO ordersBuyDao;
+	@Inject
+	private OrdersSellDAO ordersSellDao;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -109,4 +120,36 @@ public class HomeController {
 		
 		return "tran/listTransactions";
 	}	
+	
+	@RequestMapping(value = "/listOrdersBuy", method = RequestMethod.GET)
+	public String listOrdersBuy(@RequestParam Map<String, String> params, Model model) throws ParseException {		
+		String sCurrency_pair = "";
+		sCurrency_pair = params.get("currency_pair");
+		
+		if (StringUtils.isEmpty(sCurrency_pair)) sCurrency_pair= Constants.ETH_KRW;
+		
+		OrdersBuyVO vo = new OrdersBuyVO();
+		vo.setCurrency_pair(sCurrency_pair);
+		model.addAttribute("ordersBuyList", ordersBuyDao.getOrdersBuyList(vo));
+		
+		model.addAttribute("currency_pair", sCurrency_pair);
+		
+		return "tran/listOrdersBuy";
+	}	
+	
+	@RequestMapping(value = "/listOrdersSell", method = RequestMethod.GET)
+	public String listOrdersSell(@RequestParam Map<String, String> params, Model model) throws ParseException {		
+		String sCurrency_pair = "";
+		sCurrency_pair = params.get("currency_pair");
+		
+		if (StringUtils.isEmpty(sCurrency_pair)) sCurrency_pair= Constants.ETH_KRW;
+		
+		OrdersSellVO vo = new OrdersSellVO();
+		vo.setCurrency_pair(sCurrency_pair);
+		model.addAttribute("ordersSellList", ordersSellDao.getOrdersSellList(vo));
+		
+		model.addAttribute("currency_pair", sCurrency_pair);
+		
+		return "tran/listOrdersSell";
+	}		
 }

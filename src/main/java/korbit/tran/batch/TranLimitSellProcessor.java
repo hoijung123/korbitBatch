@@ -111,7 +111,7 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 							OrdersSellVO sellVOUpt = new OrdersSellVO();
 							sellVOUpt.setCurrency_pair(sCurrency_pair);
 							sellVOUpt.setSell_seq(sub.getSell_seq());
-							sellVOUpt.setOrderId(ret.getOrderId());
+							sellVOUpt.setOrder_id(ret.getOrderId());
 							sellVOUpt.setStatus(ret.getStatus());
 							ordersSellDao.updateOrdersSell(sellVOUpt);
 						}

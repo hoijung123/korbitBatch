@@ -7,7 +7,7 @@ public class OrdersSellVO {
 	Long price = null;
 	Float coin_amount = null;
 	String status = "";
-	String orderId = "";
+	String order_id = "";
 	Integer sell_seq = null;
 	
 	
@@ -24,11 +24,11 @@ public class OrdersSellVO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getOrderId() {
-		return orderId;
+	public String getOrder_id() {
+		return order_id;
 	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setOrder_id(String orderId) {
+		this.order_id = orderId;
 	}
 	public String getCurrency_pair() {
 		return currency_pair;
