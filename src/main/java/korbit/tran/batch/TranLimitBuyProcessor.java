@@ -83,7 +83,7 @@ public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 					continue;
 				}
 				
-				if ("N".equals(sub.getStatus())) {
+				if (!Constants.SUCCESS.equals(sub.getStatus())) {
 					OrdersBuyVO buyVO = new OrdersBuyVO();
 					buyVO.setCurrency_pair(sCurrency_pair);
 					buyVO.setCoin_amount(sub.getCoin_amount());
@@ -97,7 +97,7 @@ public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 						buyVOUpt.setStatus(ret.getStatus());
 						ordersBuyDao.updateOrdersBuy(buyVOUpt);
 					}
-					if (Constants.SUCCESS != ret.getStatus()) {
+					if (Constants.SUCCESS.equals(ret.getStatus())) {
 						isBuy = true; 
 						OrdersSellVO sellVO = new OrdersSellVO();
 						sellVO.setCurrency_pair(sCurrency_pair);

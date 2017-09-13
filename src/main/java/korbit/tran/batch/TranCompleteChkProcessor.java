@@ -17,6 +17,7 @@ import korbit.tran.service.CallAPIService;
 import korbit.tran.util.Constants;
 import korbit.tran.util.SendMail;
 import korbit.tran.vo.BalanceVO;
+import korbit.tran.vo.OpenOrderVO;
 import korbit.tran.vo.OrderRetVO;
 import korbit.tran.vo.OrdersBuyVO;
 import korbit.tran.vo.OrdersSellVO;
@@ -63,7 +64,7 @@ public class TranCompleteChkProcessor implements ItemProcessor<String, String> {
 		List<OrdersBuyVO> ordersBuyList = ordersBuyDao.getOrdersBuyList(ordersBuyVO);
 		BalanceVO balanceVO = null;
 
-		List<String> openOrderList = null;
+		List<OpenOrderVO> openOrderList = null;
 		try {
 			openOrderList = api.getOrdersOpen(sCurrency_pair);
 		} catch (ParseException e) {
@@ -75,11 +76,11 @@ public class TranCompleteChkProcessor implements ItemProcessor<String, String> {
 		//판매완료 Check
 		for (OrdersSellVO sub : ordersSellList) {
 			find = false;
-			for (String s : openOrderList) {
-				if (s.equals(sub.getOrderId())) {
-					find = true;
-				}
-			}
+//			for (String s : openOrderList) {
+//				if (s.equals(sub.getOrderId())) {
+//					find = true;
+//				}
+//			}
 			//해당판매와 순위가 같은 구매 N 로 update
 			if (!find)
 			{
@@ -97,11 +98,11 @@ public class TranCompleteChkProcessor implements ItemProcessor<String, String> {
 		//구매완료 Check
 		for (OrdersBuyVO sub : ordersBuyList) {
 			find = false;
-			for (String s : openOrderList) {
-				if (s.equals(sub.getOrderId())) {
-					find = true;
-				}
-			}
+//			for (String s : openOrderList) {
+//				if (s.equals(sub.getOrderId())) {
+//					find = true;
+//				}
+//			}
 			//해당구매와 순위가 같은 판매 N 로 update
 			if (!find)
 			{

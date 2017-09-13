@@ -1,5 +1,7 @@
 package korbit.tran.vo;
 
+import korbit.tran.util.Utils;
+
 public class OpenOrderVO {
 	public String getTimestamp() {
 		return timestamp;
@@ -25,6 +27,14 @@ public class OpenOrderVO {
 	PriceVO total = null;
 	PriceVO open = null;
 	PriceVO native_total = null;
+	
+	public String getDate_time() {
+		return Utils.timeStamp2Date(this.date_time);
+	}
+	public void setDate_time(String date_time) {
+		this.date_time = date_time;
+	}
+	String date_time = "";
 	public PriceVO getTotal() {
 		return total;
 	}

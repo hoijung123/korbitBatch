@@ -77,7 +77,7 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 
 		try {
 			TickerVO tickerVo = api.getTicker(sCurrency_pair);
-			System.out.println(sCurrency_pair + " Ticker Price =============> " + tickerVo.getLast());
+			logger.info(sCurrency_pair + " Ticker Price =============> " + tickerVo.getLast());
 
 			boolean isSell = false;
 
@@ -101,8 +101,7 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 					limit = (float) 0.1;
 				}
 				if (currency_balance >= limit)
-					// if (tickerVo.getLast() > sub.getPrice()) {
-					if ("N".equals(sub.getStatus())) {
+					if (!Constants.SUCCESS.equals(sub.getStatus())) {
 						OrdersSellVO sellVO = new OrdersSellVO();
 						sellVO.setCurrency_pair(sCurrency_pair);
 						sellVO.setCoin_amount(sub.getCoin_amount());
@@ -117,7 +116,7 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 							ordersSellDao.updateOrdersSell(sellVOUpt);
 						}
 
-						if (Constants.SUCCESS != ret.getStatus()) {
+						if (Constants.SUCCESS.equals(ret.getStatus())) {
 							isSell = true;
 							OrdersBuyVO buyVO = new OrdersBuyVO();
 							buyVO.setCurrency_pair(sCurrency_pair);
@@ -131,9 +130,8 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 						}
 
 					} else {
-						System.out.println("Tran is Not Setting");
+						logger.info("Tran is Not Setting");
 					}
-				// }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

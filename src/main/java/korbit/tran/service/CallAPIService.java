@@ -350,24 +350,22 @@ public class CallAPIService {
 	}
 
 	/* 미체결주문조회 */
-	public List<String> getOrdersOpen(String currency_pair) throws ParseException {
+	public List<OpenOrderVO> getOrdersOpen(String currency_pair) throws ParseException {
 		String accessToken = this.oauth();
 		List<String> listOrdersId = new ArrayList<String>();
 
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
 		params.add(new BasicNameValuePair("currency_pair", currency_pair));
+		params.add(new BasicNameValuePair("limit", "100"));
 
 		String json = callGetApi(Constants.ordersOpenPath, params);
 
 		ObjectMapper mapper = new ObjectMapper();
-		List<OpenOrderVO> openOrders;
+		List<OpenOrderVO> openOrders = null;
 		try {
 			openOrders = mapper.readValue(json, new TypeReference<List<OpenOrderVO>>() {
 			});
-			for (OpenOrderVO sub : openOrders) {
-				listOrdersId.add(sub.getId());
-			}
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -379,7 +377,7 @@ public class CallAPIService {
 			e.printStackTrace();
 		}
 
-		return listOrdersId;
+		return openOrders;
 	}
 
 	/* 주문취소 */

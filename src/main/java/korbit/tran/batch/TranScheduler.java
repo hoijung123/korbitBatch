@@ -60,8 +60,8 @@ public class TranScheduler {
 
 		try {
 
-			 JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
-			 System.out.println("Exit Status : " + execution.getStatus());
+			 //JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
+			 //System.out.println("Exit Status : " + execution.getStatus());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,8 +87,8 @@ public class TranScheduler {
 
 		try {
 
-			 JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
-			 System.out.println("Exit Status : " + execution.getStatus());
+			 //JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
+			 //System.out.println("Exit Status : " + execution.getStatus());
 
 		} catch (Exception e) {
 			e.printStackTrace();
