@@ -24,7 +24,7 @@ import korbit.tran.vo.TranConfigVO;
 public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 
 	private static final Logger logger = LoggerFactory.getLogger(TranLimitBuyProcessor.class);
-	private static final int SLEEP_TIME = 2000;
+	private static final int SLEEP_TIME = 1000;
 
 	@Inject
 	private TranConfigDAO tranConfigDAO;
@@ -35,9 +35,15 @@ public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 
 	@Override
 	public String process(String item) throws Exception {
-		this.tranCoin(Constants.ETH_KRW);
-		Thread.sleep(SLEEP_TIME);
-		this.tranCoin(Constants.ETC_KRW);
+		CallAPIService api = new CallAPIService();
+		if (api.getOrdersOpen(Constants.ETH_KRW).size() < 10) {
+			this.tranCoin(Constants.ETH_KRW);
+			Thread.sleep(SLEEP_TIME);
+		}
+		if (api.getOrdersOpen(Constants.ETC_KRW).size() < 10) {
+			this.tranCoin(Constants.ETC_KRW);
+			Thread.sleep(SLEEP_TIME);
+		}
 		return item;
 	}
 
@@ -73,16 +79,15 @@ public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 				if ("N".equals(sTranBuyYn)) {
 					continue;
 				}
-				
-				if (isBuy)
-				{
+
+				if (isBuy) {
 					continue;
 				}
 
-				if (currency_balance < (sub.getCoin_amount() * sub.getPrice()) ) {
+				if (currency_balance < (sub.getCoin_amount() * sub.getPrice())) {
 					continue;
 				}
-				
+
 				if (!Constants.SUCCESS.equals(sub.getStatus())) {
 					OrdersBuyVO buyVO = new OrdersBuyVO();
 					buyVO.setCurrency_pair(sCurrency_pair);
@@ -98,7 +103,7 @@ public class TranLimitBuyProcessor implements ItemProcessor<String, String> {
 						ordersBuyDao.updateOrdersBuy(buyVOUpt);
 					}
 					if (Constants.SUCCESS.equals(ret.getStatus())) {
-						isBuy = true; 
+						isBuy = true;
 						OrdersSellVO sellVO = new OrdersSellVO();
 						sellVO.setCurrency_pair(sCurrency_pair);
 						sellVO.setSell_seq(sub.getBuy_seq());

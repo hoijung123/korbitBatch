@@ -74,7 +74,7 @@ public class CallAPIService {
 			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
-			sendMail.sendMail("apicall - Error : ", "response => " + response.toString() + " " + e.getMessage());
+			sendMail.sendMail("apicall - Error : ", "path-> " + path +" \n\r response => " + response.toString() + " " + e.getMessage());
 			return null;
 		}
 	}
