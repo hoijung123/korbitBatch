@@ -5,8 +5,12 @@
 	<title>Home</title>
 </head>
 <body>
-<jsp:include page="tran/menu.jsp" flush="false"/>
+<jsp:include page="menu.jsp" flush="false"/>
 
-<P>  The time on the server is ${serverTime}. </P>
+<P>  Token is ${ACCESS_TOKEN}. </P>
+<br>
+<P>  Pub_time is ${Pub_time}. </P>
+
+
 </body>
 </html>
