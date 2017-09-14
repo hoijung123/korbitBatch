@@ -41,7 +41,7 @@ public class TranLimitSellProcessor implements ItemProcessor<String, String> {
 			this.tranCoin(Constants.ETH_KRW);
 			Thread.sleep(SLEEP_TIME);
 		}
-		if (api.getOrdersOpen(Constants.ETH_KRW).size() < 10) {
+		if (api.getOrdersOpen(Constants.ETC_KRW).size() < 10) {
 			this.tranCoin(Constants.ETC_KRW);
 			Thread.sleep(SLEEP_TIME);
 		}

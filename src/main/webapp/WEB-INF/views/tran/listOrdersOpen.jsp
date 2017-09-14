@@ -1,3 +1,4 @@
+<META http-equiv="Content-Type" content="text/html; charset=euc-kr" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page session="false"%>
@@ -10,6 +11,13 @@
 <script type="text/javascript">
 	function change(currency_pair) {
 		location.href = "listOrdersOpen?currency_pair=" + currency_pair;
+	}
+	
+	function ordersCancel(currency_pair,id) {
+		var loc = "ordersCancel?currency_pair=" + currency_pair + "&id=" + id;
+		//alert(loc);
+		location.href = loc;
+		//alert(location.href);
 	}
 </script>
 
@@ -32,6 +40,7 @@
 			<td width="100">timestamp</td>
 			<td width="50">total</td>
 			<td width="50">type</td>
+			<td width="50">취소</td>
 			<c:forEach var="sub" items="${ordersOpenList}">
 				<tr>
 					<td>${sub.id}</td>
@@ -42,7 +51,8 @@
 							pattern="###,###" /></td>
 					<td>${sub.dateTime}</td>
 					<td>${sub.total.value}</td>
-					<td>${sub.type}
+					<td>${sub.type}</td>
+					<td><a href="javascript:ordersCancel('${currency_pair}','${sub.id}');">${sub.id}</a></td>
 				</tr>
 			</c:forEach>
 	</table>

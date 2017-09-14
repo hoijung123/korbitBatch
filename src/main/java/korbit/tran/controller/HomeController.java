@@ -21,6 +21,7 @@ import korbit.tran.dao.OrdersBuyDAO;
 import korbit.tran.dao.OrdersSellDAO;
 import korbit.tran.service.CallAPIService;
 import korbit.tran.util.Constants;
+import korbit.tran.vo.AccessTokenVO;
 import korbit.tran.vo.OrdersBuyVO;
 import korbit.tran.vo.OrdersSellVO;
 
@@ -59,7 +60,10 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/getToken", method = RequestMethod.GET)
 	public String getToken(Locale locale, Model model) {		
-				
+		CallAPIService api = new CallAPIService();
+		Constants.ACCESS_TOKEN_VO = api.accessToken();
+		Constants.ACCESS_TOKEN_VO.setPub_time(new Date());
+		
 		model.addAttribute("ACCESS_TOKEN", Constants.ACCESS_TOKEN_VO.getAccess_token() );
 		model.addAttribute("Pub_time", Constants.ACCESS_TOKEN_VO.getPub_time() );
 		
@@ -151,5 +155,25 @@ public class HomeController {
 		model.addAttribute("currency_pair", sCurrency_pair);
 		
 		return "tran/listOrdersSell";
+	}
+	
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/ordersCancel", method = RequestMethod.GET)
+	public String ordersCancel(@RequestParam Map<String, String> params, Model model) throws ParseException {		
+		String sCurrency_pair = "";
+		sCurrency_pair = params.get("currency_pair");
+		
+		String id = params.get("id");
+		
+		if (StringUtils.isEmpty(sCurrency_pair)) sCurrency_pair= Constants.ETH_KRW;
+		
+		CallAPIService api = new CallAPIService();
+		api.ordersCancel(Constants.ACCESS_TOKEN_VO.getAccess_token() , sCurrency_pair, id);
+		
+		return "redirect:listOrdersOpen?currency_pair=" + sCurrency_pair;
 	}		
 }
