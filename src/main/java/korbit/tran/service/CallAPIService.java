@@ -41,6 +41,7 @@ import korbit.tran.vo.BalanceVO;
 import korbit.tran.vo.ConfigVO;
 import korbit.tran.vo.OpenOrderVO;
 import korbit.tran.vo.OrderRetVO;
+import korbit.tran.vo.OrderVO;
 import korbit.tran.vo.OrdersBuyVO;
 import korbit.tran.vo.OrdersSellVO;
 import korbit.tran.vo.TickerVO;
@@ -129,7 +130,7 @@ public class CallAPIService {
 		return result;
 	}
 
-	/* »ç¿ëÀÚÀÎÁõ */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	public String oauth() {
 		String accessToken = "";
 
@@ -166,7 +167,7 @@ public class CallAPIService {
 		return accessToken;
 	}
 
-	/* »ç¿ëÀÚÀÎÁõ */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	public AccessTokenVO accessToken() {
 
 		ArrayList<NameValuePair> oauthParameters = new ArrayList<NameValuePair>();
@@ -196,7 +197,7 @@ public class CallAPIService {
 		return accessTokenVO;
 	}
 
-	/* ÅäÅ« °»½Å */
+	/* ï¿½ï¿½Å« ï¿½ï¿½ï¿½ï¿½ */
 	public AccessTokenVO refreshToken() {
 
 		ArrayList<NameValuePair> oauthParameters = new ArrayList<NameValuePair>();
@@ -260,12 +261,12 @@ public class CallAPIService {
 		return orderRetVO;
 	}
 
-	/* Buy ½ÃÀå°¡ */
+	/* Buy ï¿½ï¿½ï¿½å°¡ */
 	public OrderRetVO ordersBuyMarket(String currency_pair, String amount) {
 		return this.ordersBuy(currency_pair, Constants.TRAN_TYPE_MARKET, amount, "");
 	}
 
-	/* Buy ÁöÁ¤°¡ */
+	/* Buy ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	public OrderRetVO ordersBuyLimit(OrdersBuyVO buyVO) {
 		return this.ordersBuy(buyVO.getCurrency_pair(), Constants.TRAN_TYPE_LIMIT, buyVO.getCoin_amount().toString(),
 				buyVO.getPrice().toString());
@@ -301,12 +302,12 @@ public class CallAPIService {
 		return orderRetVO;
 	}
 
-	/* Sell ½ÃÀå°¡ */
+	/* Sell ï¿½ï¿½ï¿½å°¡ */
 	public OrderRetVO ordersSellMarket(String currency_pair, Float amount) {
 		return this.ordersSell(currency_pair, Constants.TRAN_TYPE_MARKET, amount.toString(), "");
 	}
 
-	/* Sell ÁöÁ¤°¡ */
+	/* Sell ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	public OrderRetVO ordersSellLimit(OrdersSellVO sellVO) {
 		return this.ordersSell(sellVO.getCurrency_pair(), Constants.TRAN_TYPE_LIMIT, sellVO.getCoin_amount().toString(),
 				sellVO.getPrice().toString());
@@ -326,7 +327,7 @@ public class CallAPIService {
 		return invoiceToken;
 	}
 
-	/* Áö°©Á¶È¸ */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ */
 	public BalanceVO getBalances() throws ParseException {
 		String accessToken = this.oauth();
 		ObjectMapper mapper = new ObjectMapper();
@@ -351,7 +352,7 @@ public class CallAPIService {
 		return balanceVO;
 	}
 
-	/* ¹ÌÃ¼°áÁÖ¹®Á¶È¸ */
+	/* ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½È¸ */
 	public List<OpenOrderVO> getOrdersOpen(String currency_pair) throws ParseException {
 		String accessToken = this.oauth();
 		List<String> listOrdersId = new ArrayList<String>();
@@ -382,7 +383,7 @@ public class CallAPIService {
 		return openOrders;
 	}
 
-	/* ÁÖ¹®Ãë¼Ò */
+	/* ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ */
 	public String ordersCancel(String accessToken, String currency_pair, String id) {
 
 		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
@@ -395,26 +396,28 @@ public class CallAPIService {
 		return invoiceToken;
 	}
 
-	/* ¹ÌÃ¼°áÁÖ¹®Á¶È¸ */
-	public List<String> getOrders(String accessToken, String currency_pair, String status, String id)
+	/* ï¿½Ö¹ï¿½ï¿½ï¿½È¸ */
+	public List<OrderVO> getOrders(String currency_pair, String status, String id)
 			throws ParseException {
+		String accessToken = this.oauth();
 		List<String> listOrdersId = new ArrayList<String>();
 
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
 		params.add(new BasicNameValuePair("currency_pair", currency_pair));
+		params.add(new BasicNameValuePair("status", status));
+		params.add(new BasicNameValuePair("limit", "100"));
 
-		JSONArray invoiceToken = null;
-		String json = callGetApi(Constants.ordersOpenPath, params);
+		String json = callGetApi(Constants.ordersPath, params);
 
 		ObjectMapper mapper = new ObjectMapper();
-		List<OpenOrderVO> openOrders;
+		List<OrderVO> orders = null;
 		try {
-			openOrders = mapper.readValue(json, new TypeReference<List<OpenOrderVO>>() {
+			orders = mapper.readValue(json, new TypeReference<List<OrderVO>>() {
 			});
-			for (OpenOrderVO sub : openOrders) {
-				listOrdersId.add(sub.getId());
-			}
+//			for (OrderVO sub : orders) {
+//				listOrdersId.add(sub.getId());
+//			}
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -426,10 +429,15 @@ public class CallAPIService {
 			e.printStackTrace();
 		}
 
-		return listOrdersId;
+		return orders;
+	}
+	
+	public List<OrderVO> getOrdersComplete(String currency_pair) throws ParseException {
+		return this.getOrders(currency_pair, "filled", "");
+		
 	}
 
-	/* ÃÖÁ¾ Ã¼°á °¡°Ý */
+	/* ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 	public TickerVO getTicker(String currency_pair) throws ParseException {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -456,7 +464,7 @@ public class CallAPIService {
 		return tickerVO;
 	}
 
-	/* Ã¼°áÁÖ¹®Á¶È¸ */
+	/* Ã¼ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½È¸ */
 	public List<TransactionVO> getTransactions(String currency_pair, String orderId) {
 		String accessToken = this.oauth();
 
@@ -492,7 +500,7 @@ public class CallAPIService {
 		return transactionVOList;
 	}
 
-	/* Ã¼°áÁÖ¹®Á¶È¸ */
+	/* Ã¼ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½È¸ */
 	public List<TransactionVO> getTransactions(String currency_pair) {
 
 		return this.getTransactions(currency_pair, "");

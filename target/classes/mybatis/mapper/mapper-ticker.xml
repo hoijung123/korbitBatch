@@ -380,4 +380,5 @@
 		WHERE currency_pair = #{currency_pair}
 		AND sell_seq = #{sell_seq}
 	</update>
+
 </mapper>

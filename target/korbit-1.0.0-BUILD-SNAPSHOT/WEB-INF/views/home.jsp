@@ -8,5 +8,9 @@
 <jsp:include page="tran/menu.jsp" flush="false"/>
 
 <P>  The time on the server is ${serverTime}. </P>
+
+<a href="resources/line.html">line.html</a>
 </body>
 </html>
+
+

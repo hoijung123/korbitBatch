@@ -9,11 +9,11 @@
 	<import resource="../config/context.xml" />
 	<import resource="../config/database.xml" />
 
-	<bean id="itemProcessor" class="com.mycom.myapp.CustomItemProcessor" />
+	<bean id="tranProcessor" class="korbit.tran.batch.TranProcessor" />
 
-	<bean id="reader" class="com.mycom.myapp.ExampleItemReader" scope="step">
+	<bean id="reader" class="korbit.tran.batch.NullItemReader" scope="step">
 	</bean>
-	<bean id="writer" class="com.mycom.myapp.ExampleItemWriter" scope="step">
+	<bean id="writer" class="korbit.tran.batch.NullItemWriter" scope="step">
 	</bean>
 
 	<batch:job id="helloWorldJob">
@@ -21,7 +21,7 @@
 
 			<batch:tasklet transaction-manager="transactionManager">
 
-				<batch:chunk reader="reader" processor="itemProcessor"
+				<batch:chunk reader="reader" processor="tranProcessor"
 					writer="writer" commit-interval="1" />
 
 			</batch:tasklet>

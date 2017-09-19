@@ -96,33 +96,31 @@ public class TranScheduler {
 
 		System.out.println("tranLimitSellJob Done");
 	}
-	//
-	// @Scheduled(fixedRate = 1000 * 100000000)
-	// public void tranCompleteChkJob() throws JobExecutionAlreadyRunningException,
-	// JobRestartException,
-	// JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-	//
-	// String[] springConfig = { "spring/batch/jobs/tran_job.xml" };
-	//
-	// ApplicationContext context = new
-	// ClassPathXmlApplicationContext(springConfig);
-	//
-	// JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
-	//
-	// JobParametersBuilder builder = new JobParametersBuilder();
-	// builder.addDate("date", new Date());
-	//
-	// Job job = (Job) context.getBean("tranCompleteChkJob");
-	//
-	// try {
-	//
-	// JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
-	// System.out.println("Exit Status : " + execution.getStatus());
-	//
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	//
-	// System.out.println("tranCompleteChkJob Done");
-	// }
+
+	@Scheduled(fixedRate = 1000 * 10)
+	public void tranCompleteChkJob() throws JobExecutionAlreadyRunningException, JobRestartException,
+			JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+
+		String[] springConfig = { "spring/batch/jobs/tran_job.xml" };
+
+		ApplicationContext context = new ClassPathXmlApplicationContext(springConfig);
+
+		JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
+
+		JobParametersBuilder builder = new JobParametersBuilder();
+		builder.addDate("date", new Date());
+
+		Job job = (Job) context.getBean("tranCompleteChkJob");
+
+		try {
+
+			JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
+			System.out.println("Exit Status : " + execution.getStatus());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("tranCompleteChkJob Done");
+	}
 }

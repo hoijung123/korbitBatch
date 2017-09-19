@@ -5,6 +5,14 @@ import korbit.tran.util.Utils;
 public class BaseVO {
 	String timestamp = "";
 	String dateTime = "";
+	String currency_pair = ""; 
+	
+	public String getCurrency_pair() {
+		return currency_pair;
+	}
+	public void setCurrency_pair(String currency_pair) {
+		this.currency_pair = currency_pair;
+	}
 	public String getTimestamp() {
 		return timestamp;
 	}

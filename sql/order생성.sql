@@ -119,7 +119,7 @@ SELECT `currency_pair`,
     `order_id`,
     `status`
 FROM (SELECT 
-        'eth_krw' AS `currency_pair`,
+        'etc_krw' AS `currency_pair`,
             @RNUM:=@RNUM + 1 AS buy_seq,
             'limit' AS `type`,
             17120.00000 + 200 AS `price`,
@@ -127,11 +127,11 @@ FROM (SELECT
             0.1000 AS `fiat_amount`,
             NOW() AS `buy_date`,
             NULL `order_id`,
-            'Y' `status`  /*Order 등록시 기존구매내역 판매방지*/
+            'N' `status`  /*Order 등록시 기존구매내역 판매방지*/
     FROM
         (SELECT 
         currency
     FROM
         t_ticker
     ORDER BY date ASC) a, (SELECT @RNUM:=0) b
-    LIMIT 20) t;    
+    LIMIT 6) t;    

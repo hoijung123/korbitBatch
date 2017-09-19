@@ -175,5 +175,6 @@ public class HomeController {
 		api.ordersCancel(Constants.ACCESS_TOKEN_VO.getAccess_token() , sCurrency_pair, id);
 		
 		return "redirect:listOrdersOpen?currency_pair=" + sCurrency_pair;
-	}		
+	}
+	
 }

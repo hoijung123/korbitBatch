@@ -1,6 +1,6 @@
 package korbit.tran.vo;
 
-public class OrdersSellVO {
+public class OrdersSellVO extends BaseVO {
 
 	String currency_pair = "";
 	String type = "";
