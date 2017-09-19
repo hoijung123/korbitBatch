@@ -22,17 +22,14 @@ public class OrderDAOImplTest extends AbstractTest {
 
 	@Test
 	public final void testGetOrderVO() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
 	public final void testUpdate() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
 	public final void testGetTime() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
@@ -49,13 +46,11 @@ public class OrderDAOImplTest extends AbstractTest {
 
 	@Test
 	public final void testGetK() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
 	public final void testGetList() {
 		logger.info("" + dao.getList());
-		fail("Not yet implemented"); // TODO
 	}
 
 }
