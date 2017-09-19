@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="korbit.dao.DbMapper.Order">
+
+	<!-- /* select dual */ -->
+	<select id="getDual" resultType="java.lang.String">
+		select count(1) from t_ticker
+	</select>
+
+	<select id="getList" resultType="korbit.tran.vo.OrderVO">
+		SELECT `t_orders`.`id`,
+		`t_orders`.`currency_pair`,
+		`t_orders`.`side`,
+		`t_orders`.`avg_price`,
+		`t_orders`.`price`,
+		`t_orders`.`order_amount`,
+		`t_orders`.`filled_amount`,
+		`t_orders`.`filled_total`,
+		`t_orders`.`created_at`,
+		`t_orders`.`last_filled_at`,
+		`t_orders`.`status`,
+		`t_orders`.`fee`
+		FROM `bitsum`.`t_orders`
+		WHERE 1=1
+		<if test="currency_pair != null">
+			currency_pair =
+			#{currency_pair}
+		</if>
+		order by
+		created_at
+	</select>
+
+	<insert id="register">
+		INSERT INTO `bitsum`.`t_orders`
+		(`id`,
+		`currency_pair`,
+		`side`,
+		`avg_price`,
+		`price`,
+		`order_amount`,
+		`filled_amount`,
+		`filled_total`,
+		`created_at`,
+		`last_filled_at`,
+		`status`,
+		`fee`)
+		VALUES
+		(#{id},
+		#{currency_pair},
+		#{side},
+		#{avg_price},
+		#{price},
+		#{order_amount},
+		#{filled_amount},
+		#{filled_total},
+		#{created_at},
+		#{last_filled_at},
+		#{status},
+		#{fee})
+	</insert>
+
+	<select id="get" resultType="korbit.tran.vo.OrderVO">
+		SELECT `t_orders`.`id`,
+		`t_orders`.`currency_pair`,
+		`t_orders`.`side`,
+		`t_orders`.`avg_price`,
+		`t_orders`.`price`,
+		`t_orders`.`order_amount`,
+		`t_orders`.`filled_amount`,
+		`t_orders`.`filled_total`,
+		`t_orders`.`created_at`,
+		`t_orders`.`last_filled_at`,
+		`t_orders`.`status`,
+		`t_orders`.`fee`
+		FROM `bitsum`.`t_orders`
+		WHERE 1=1
+		and currency_pair =
+		#{currency_pair}
+		And id = #{id}
+	</select>
+</mapper>
