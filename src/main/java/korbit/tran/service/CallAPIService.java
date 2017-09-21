@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 //import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -24,26 +21,22 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import korbit.tran.batch.TranProcessor;
-import korbit.tran.dao.ConfigDAO;
-import korbit.tran.dao.TranConfigDAO;
 import korbit.tran.util.Constants;
 import korbit.tran.util.SendMail;
 import korbit.tran.vo.AccessTokenVO;
 import korbit.tran.vo.BalanceVO;
-import korbit.tran.vo.ConfigVO;
 import korbit.tran.vo.OpenOrderVO;
 import korbit.tran.vo.OrderRetVO;
 import korbit.tran.vo.OrderVO;
 import korbit.tran.vo.OrdersBuyVO;
 import korbit.tran.vo.OrdersSellVO;
+import korbit.tran.vo.TickerDtlVO;
 import korbit.tran.vo.TickerVO;
 import korbit.tran.vo.TransactionVO;
 
@@ -437,7 +430,7 @@ public class CallAPIService {
 		
 	}
 
-	/* ���� ü�� ���� */
+	/* 시세조회 */
 	public TickerVO getTicker(String currency_pair) throws ParseException {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -463,6 +456,34 @@ public class CallAPIService {
 
 		return tickerVO;
 	}
+	
+	/* 시장 현황 상세정보 조회 */
+	public TickerDtlVO getTickerDtl(String currency_pair) throws ParseException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+
+		params.add(new BasicNameValuePair("currency_pair", currency_pair));
+
+		String json = callGetApi(Constants.tickerDtlPath, params);
+
+		TickerDtlVO tickerDtlVO = null;
+		try {
+			tickerDtlVO = mapper.readValue(json, TickerDtlVO.class);
+			tickerDtlVO.setCurrency_pair(currency_pair);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return tickerDtlVO;
+	}	
 
 	/* ü���ֹ���ȸ */
 	public List<TransactionVO> getTransactions(String currency_pair, String orderId) {

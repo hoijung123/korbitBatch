@@ -5,11 +5,10 @@
 	<groupId>com.kiss</groupId>
 	<artifactId>korbit</artifactId>
 	<name>korbitBatch</name>
-	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.8</java-version>
-		<org.springframework-version>4.3.10.RELEASE</org.springframework-version>
+		<org.springframework-version>4.0.9.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<spring.batch.version>2.2.0.RELEASE</spring.batch.version>
@@ -271,4 +270,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.kiss</groupId>
+				<artifactId>korbit</artifactId>
+				<version>1.0.0-BUILD-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<packaging>war</packaging>
 </project>

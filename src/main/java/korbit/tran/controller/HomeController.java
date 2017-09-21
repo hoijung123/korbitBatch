@@ -2,6 +2,7 @@ package korbit.tran.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -16,14 +17,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import korbit.tran.dao.OrdersBuyDAO;
 import korbit.tran.dao.OrdersSellDAO;
+import korbit.tran.dao.TickerDAO;
 import korbit.tran.service.CallAPIService;
 import korbit.tran.util.Constants;
 import korbit.tran.vo.AccessTokenVO;
 import korbit.tran.vo.OrdersBuyVO;
 import korbit.tran.vo.OrdersSellVO;
+import korbit.tran.vo.TickerDtlVO;
+import korbit.tran.vo.TickerVO;
 
 /**
  * Handles requests for the application home page.
@@ -37,6 +42,9 @@ public class HomeController {
 	private OrdersBuyDAO ordersBuyDao;
 	@Inject
 	private OrdersSellDAO ordersSellDao;
+	
+	@Inject
+	private TickerDAO tickerDAO;	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -176,5 +184,31 @@ public class HomeController {
 		
 		return "redirect:listOrdersOpen?currency_pair=" + sCurrency_pair;
 	}
+	
+	@RequestMapping(value = "/jsonTicker", method = RequestMethod.GET)
+	public @ResponseBody TickerDtlVO jsonTicker(@RequestParam Map<String, String> params) {
+		// VO객체에 SET한후 vo객체자체를 return
+		String currency = params.get("currency");
+		if (StringUtils.isEmpty(currency)) {
+			currency = Constants.ETH_KRW;
+		}
+		TickerDtlVO vo = new TickerDtlVO();
+		vo.setCurrency_pair(currency);
+		TickerDtlVO lastestVo = tickerDAO.getLastestTicker(vo);
+		return lastestVo;
+	}
+	
+	@RequestMapping(value = "/jsonTickerList", method = RequestMethod.GET)
+	public @ResponseBody List<TickerDtlVO> jsonTickerList(@RequestParam Map<String, String> params) {
+		// VO객체에 SET한후 vo객체자체를 return
+		String currency = params.get("currency");
+		if (StringUtils.isEmpty(currency)) {
+			currency = Constants.ETH_KRW;
+		}
+		TickerDtlVO vo = new TickerDtlVO();
+		vo.setCurrency_pair(currency);
+		List<TickerDtlVO> list = tickerDAO.getList(vo);
+		return list;
+	}	
 	
 }

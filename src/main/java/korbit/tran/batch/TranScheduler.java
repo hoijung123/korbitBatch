@@ -114,8 +114,8 @@ public class TranScheduler {
 
 		try {
 
-			JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
-			System.out.println("Exit Status : " + execution.getStatus());
+			//JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
+			//System.out.println("Exit Status : " + execution.getStatus());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,4 +123,32 @@ public class TranScheduler {
 
 		System.out.println("tranCompleteChkJob Done");
 	}
+	
+	
+	@Scheduled(fixedRate = 1000 * 20)
+	public void tickerJob() throws JobExecutionAlreadyRunningException, JobRestartException,
+			JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+
+		String[] springConfig = { "spring/batch/jobs/ticker_job.xml" };
+
+		ApplicationContext context = new ClassPathXmlApplicationContext(springConfig);
+
+		JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
+
+		JobParametersBuilder builder = new JobParametersBuilder();
+		builder.addDate("date", new Date());
+
+		Job job = (Job) context.getBean("tickerJob");
+
+		try {
+
+			JobExecution execution = jobLauncher.run(job, builder.toJobParameters());
+			System.out.println("Exit Status : " + execution.getStatus());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("tickerJob Done");
+	}	
 }
